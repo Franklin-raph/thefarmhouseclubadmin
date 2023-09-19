@@ -22,7 +22,7 @@ const Dashboard = ({baseUrl}) => {
     async function getUsers(){
         const response = await fetch(`${baseUrl}/users/`,{
             headers:{
-                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTM5MzY4LCJpYXQiOjE2OTUwNTI5NjgsImp0aSI6IjE5ZWEwNjMyMjljOTQ4MzhiYTEyZDhmNzA2YzA1OTc3IiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.F8NbrZCH2MZj0iIgEKgrEl7XLwd7f4JElApF1kS3hdE"
+                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU"
             }
         })
         const data = await response.json()
@@ -35,7 +35,7 @@ const Dashboard = ({baseUrl}) => {
     async function getInvestments(){
         const response = await fetch(`${baseUrl}/investments/`,{
             headers:{
-                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTM5MzY4LCJpYXQiOjE2OTUwNTI5NjgsImp0aSI6IjE5ZWEwNjMyMjljOTQ4MzhiYTEyZDhmNzA2YzA1OTc3IiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.F8NbrZCH2MZj0iIgEKgrEl7XLwd7f4JElApF1kS3hdE"
+                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU"
             }
         })
         const data = await response.json()

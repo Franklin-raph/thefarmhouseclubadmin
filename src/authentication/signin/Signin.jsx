@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from "../../assets/images/thefarmhouseclublogo2.png.crdownload.png"
 
-const Signin = () => {
+const Signin = ({baseUrl}) => {
+    console.log(baseUrl)
     const [loading, setLoading] = useState(false)
     const [adminLevel, setAdminLevel] = useState(1)
     const [adminEmail, setAdminEmail] = useState("")
@@ -11,8 +12,17 @@ const Signin = () => {
     const [inputType, setInputType] = useState("password");
     const [showPassword, setShowPassword] = useState(false)
 
-    async function handleAdminRegister(){
-
+    async function handleAdminSignIn(e){
+        e.preventDefault()
+        const response = await fetch(`${baseUrl}/admin-login/`, {
+            method:"POST",
+            body: JSON.stringify({email:adminEmail, password:adminPassWord}),
+            headers:{
+                "Content-Type":"application/json"
+            }
+        })
+        const data = await response.json()
+        console.log(data)
     }
 
     const toggleInput = () => {
@@ -34,7 +44,7 @@ const Signin = () => {
                                         <div class="text-center">
                                             <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                         </div>
-                                        <form class="user">
+                                        <form class="user" onSubmit={handleAdminSignIn}>
                                             <div class="form-group">
                                                 <input type="email" class="form-control form-control-user"
                                                     id="exampleInputEmail" aria-describedby="emailHelp"
@@ -49,9 +59,9 @@ const Signin = () => {
                                                     <i className="fa-regular fa-eye-slash cursor-pointer" onClick={toggleInput}></i>
                                                     )}
                                             </div>
-                                            <Link to="/dashboard" class="btn btn-primary btn-user btn-block">
+                                            <button type='submit' class="btn btn-primary btn-user btn-block bg-[#1AC888]">
                                                 Login
-                                            </Link>
+                                            </button>
                                         </form>
                                         <div class="text-center">
                                             <a class="small" href="forgot-password.html">Forgot Password?</a>

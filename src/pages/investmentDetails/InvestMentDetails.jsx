@@ -26,7 +26,7 @@ const InvestMentDetails = ({baseUrl}) => {
     async function getInvestMentDetails () {
         const response = await fetch(`${baseUrl}/investments/${id}`,{
             headers:{
-                Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTM5MzY4LCJpYXQiOjE2OTUwNTI5NjgsImp0aSI6IjE5ZWEwNjMyMjljOTQ4MzhiYTEyZDhmNzA2YzA1OTc3IiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.F8NbrZCH2MZj0iIgEKgrEl7XLwd7f4JElApF1kS3hdE`
+                Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU`
             }
         })
         const data = await response.json()
@@ -138,7 +138,10 @@ const InvestMentDetails = ({baseUrl}) => {
                 <label className='block'>Project Description</label>
                 <textarea value={description} onChange={e => setDescription(e.target.value)} style={{ border:"1px solid #bebebe" }} placeholder='Enter a project description' className='outline-none py-2 px-1 rounded-md w-full' cols="30" rows="10"></textarea>
             </div>
-            <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md'>Update Investment</button>
+            <div className="flex justify-between-items-center gap-3">
+                <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md'>Update Investment</button>
+                <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md'>Delete Investment</button>
+            </div>
         </div>
     </div>
   )

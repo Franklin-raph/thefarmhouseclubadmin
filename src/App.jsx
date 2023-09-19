@@ -14,8 +14,8 @@ function App() {
   return (
     <HashRouter>
         <Routes >
-          <Route path='/' element={<Signin />}/>
-          <Route path='/signin' element={<Signin />}/>
+          <Route path='/' element={<Signin baseUrl={baseUrl}/>}/>
+          <Route path='/signin' element={<Signin baseUrl={baseUrl}/>}/>
           <Route path='/signup' element={<Signup />}/>
           <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>}/>
           <Route path='/newinvestment' element={<NewInvestment baseUrl={baseUrl}/>}/>
