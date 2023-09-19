@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const Navbar = () => {
 
     const navigate = useNavigate()
+    const admin = JSON.parse(localStorage.getItem("admin"))
 
   return (
     <div>
@@ -25,7 +26,7 @@ const Navbar = () => {
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Frank Raphael</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{admin.user.first_name} {admin.user.last_name}</span>
                                 <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
                             </a>
                         </li>

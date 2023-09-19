@@ -1,28 +1,50 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Logo from "../../assets/images/thefarmhouseclublogo2.png.crdownload.png"
+import VerificationModal from '../../components/verificationModal/VerificationModal'
+import ErrorAlert from '../../components/alert/ErrorAlert'
 
 const Signin = ({baseUrl}) => {
-    console.log(baseUrl)
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    const [adminLevel, setAdminLevel] = useState(1)
-    const [adminEmail, setAdminEmail] = useState("")
-    const [adminPhoneNum, setAdminPhoneNum] = useState("")
-    const [adminPassWord, setAdminPassword] = useState("")
+    const [adminEmail, setAdminEmail] = useState("igboekwulusifranklin@gmail.com")
+    const [adminPassWord, setAdminPassword] = useState("Franklin@123")
     const [inputType, setInputType] = useState("password");
     const [showPassword, setShowPassword] = useState(false)
+    const [error, setError] = useState()
+    const [success, setSuccess] = useState()
+    const admin = JSON.parse(localStorage.getItem("admin"))
+
+    useEffect(() => {
+        if(admin) navigate("/dashboard")
+    },[])
 
     async function handleAdminSignIn(e){
         e.preventDefault()
-        const response = await fetch(`${baseUrl}/admin-login/`, {
-            method:"POST",
-            body: JSON.stringify({email:adminEmail, password:adminPassWord}),
-            headers:{
-                "Content-Type":"application/json"
+        if(!adminEmail || !adminPassWord){
+            setError("Please fill in the fields")
+        }else{
+            setLoading(true)
+            const response = await fetch(`${baseUrl}/login/`, {
+                method:"POST",
+                body: JSON.stringify({email:adminEmail, password:adminPassWord}),
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            })
+            const data = await response.json()
+            if(response) setLoading(false)
+            console.log(response)
+            console.log(data)
+            if(response.ok){
+                setSuccess(true)
             }
-        })
-        const data = await response.json()
-        console.log(data)
+
+            if(!response.ok){
+                setError(data.detail)
+            }
+        }
+        
     }
 
     const toggleInput = () => {
@@ -48,24 +70,26 @@ const Signin = ({baseUrl}) => {
                                             <div class="form-group">
                                                 <input type="email" class="form-control form-control-user"
                                                     id="exampleInputEmail" aria-describedby="emailHelp"
-                                                    placeholder="Enter Email Address..." />
+                                                    placeholder="Enter Email Address..." onChange={e => setAdminEmail(e.target.value)}/>
                                             </div>
                                             <div class="form-group flex items-center justify-between rounded-full pr-3" style={{ border:"1px solid #d1d3e2" }}>
                                                 <input type={inputType} class="border-none form-control form-control-user"
-                                                    id="exampleInputPassword" placeholder="Password" />
+                                                    id="exampleInputPassword" placeholder="Password" onChange={e => setAdminPassword(e.target.value)}/>
                                                     {!showPassword ? (
                                                     <i className="fa-regular fa-eye cursor-pointer" onClick={toggleInput}></i>
                                                     ) : (
                                                     <i className="fa-regular fa-eye-slash cursor-pointer" onClick={toggleInput}></i>
                                                     )}
                                             </div>
-                                            <button type='submit' class="btn btn-primary btn-user btn-block bg-[#1AC888]">
-                                                Login
-                                            </button>
+                                            {
+                                            loading ? <button className="bg-[#1AC888] w-full py-2 rounded-full text-lg text-center"><i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i></button> 
+                                            : 
+                                            <button type='submit' class="btn btn-primary btn-user btn-block bg-[#1AC888]"> Login </button>
+                                            }
                                         </form>
-                                        <div class="text-center">
+                                        {/* <div class="text-center">
                                             <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                        </div>
+                                        </div> */}
                                         {/* <div class="text-center">
                                           <Link class="small" to="/signup">Create an Account!</Link>
                                         </div> */}
@@ -77,6 +101,8 @@ const Signin = ({baseUrl}) => {
                 </div>
             </div>
         </div>
+        {success && <VerificationModal adminPassword={adminPassWord} adminEmail={adminEmail} error={error} baseUrl={baseUrl} success={success} setSuccess={setSuccess} setError={setError}/>}
+        {error && <ErrorAlert error={error} setError={setError}/>}
     </div>
   )
 }

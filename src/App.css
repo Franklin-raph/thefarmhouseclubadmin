@@ -11293,3 +11293,142 @@ body.sidebar-toggled footer.sticky-footer {
   margin-left: 14rem;
   padding-top: 8rem;
 }
+
+.successModalBg, .confirmProjectInvestModalBg, .errorModalBg, .otp-input-field-bg, .changePasswordModalBg, .twoFactorModalBg, .tokenModalBg, .verifyPaymentModdalBg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.891);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.failureModal i{
+  font-size: 50px;
+  color: rgb(209, 0, 0);
+}
+
+.successModal button, .failureModal button{
+  background-color: #1AC888;
+  font-size:18px;
+  color: #fff;
+  padding: 6px 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.successModal, .failureModal, .otp-input, .confirmProjectInvestModal, .changPasswordModal, .twoFactorModal, .verifyPaymentModal {
+  background-color: #fff;
+  color: #000;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 40%;
+  text-align: center;
+  margin: auto;
+  font-size: 18px;
+}
+
+/* ANIMATED CHECKMARK STARTS */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkmark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #ffffff;
+  stroke-miterlimit: 10;
+  margin: 10% auto;
+  box-shadow: inset 0px 0px 0px #00ff8c;
+  animation: successFill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+      stroke-dashoffset: 0
+  }
+}
+
+@keyframes scale {
+
+  0%,
+  100% {
+      transform: none
+  }
+
+  50% {
+      transform: scale3d(1.1, 1.1, 1)
+  }
+}
+
+@keyframes successFill {
+  100% {
+      box-shadow: inset 0px 0px 0px 30px #00ff8c;
+  }
+}
+
+/* ANIMATED CHECKMARK ENDS */
+
+/* ANIMATED CANCELMARK STARTS */
+.cancel {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #ffffff;
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px #ec4848;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+
+.check__cancel {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+      stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scale {
+
+  0%,
+  100% {
+      transform: none;
+  }
+
+  50% {
+      transform: scale3d(1.1, 1.1, 1);
+  }
+}
+
+@keyframes fill {
+  100% {
+      box-shadow: inset 0px 0px 0px 30px #ec4848;
+  }
+}
+
+/* ANIMATED CANCELMARK STARTS */

@@ -8,12 +8,19 @@ const Dashboard = ({baseUrl}) => {
     const [allInvestments, setAllInvestments] = useState()
     const [usersTab, setUsersTab] = useState(true)
     const [investMentsTab, setInvestMentsTab] = useState(false)
+    const admin = JSON.parse(localStorage.getItem("admin"))
     // const [usersTab, setUsersTab] = useState(true)
     // const [usersTab, setUsersTab] = useState(true)
 
     const navigate = useNavigate()
 
     useEffect(() => {
+        if(!admin){
+            navigate("/")
+        }
+        if(admin){
+            navigate("/dashboard")
+        }
         getUsers()
         getInvestments()
         console.log(baseUrl)
@@ -22,7 +29,7 @@ const Dashboard = ({baseUrl}) => {
     async function getUsers(){
         const response = await fetch(`${baseUrl}/users/`,{
             headers:{
-                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU"
+                Authorization:`Bearer ${admin.access}`
             }
         })
         const data = await response.json()
@@ -35,7 +42,7 @@ const Dashboard = ({baseUrl}) => {
     async function getInvestments(){
         const response = await fetch(`${baseUrl}/investments/`,{
             headers:{
-                Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU"
+                Authorization:`Bearer ${admin.access}`
             }
         })
         const data = await response.json()

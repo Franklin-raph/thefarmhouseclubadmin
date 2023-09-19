@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import Signin from './authentication/signin/Signin'
-import Signup from './authentication/signup/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
 import NewInvestment from './pages/newInvestment/NewInvestment'
 import UserDetails from './pages/userDetails/UserDetails'
@@ -16,7 +15,6 @@ function App() {
         <Routes >
           <Route path='/' element={<Signin baseUrl={baseUrl}/>}/>
           <Route path='/signin' element={<Signin baseUrl={baseUrl}/>}/>
-          <Route path='/signup' element={<Signup />}/>
           <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>}/>
           <Route path='/newinvestment' element={<NewInvestment baseUrl={baseUrl}/>}/>
           <Route path='/userdetails/:id' element={<UserDetails baseUrl={baseUrl}/>}/>
