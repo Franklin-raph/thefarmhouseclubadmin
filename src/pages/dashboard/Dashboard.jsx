@@ -47,7 +47,7 @@ const Dashboard = ({baseUrl}) => {
         })
         const data = await response.json()
         if(response.ok){
-            setAllInvestments(data)
+            setAllInvestments(data.reverse())
         }
         console.log(data)
     }
@@ -100,7 +100,7 @@ const Dashboard = ({baseUrl}) => {
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Investments</div>
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">All Projects</div>
                                     <div class="row no-gutters align-items-center">
                                         <div class="col-auto">
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{allInvestments && allInvestments.length}</div>
@@ -139,14 +139,19 @@ const Dashboard = ({baseUrl}) => {
             <div class="container-fluid">
                 <h1 class="h3 mb-2 text-gray-800">Users</h1>
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                    <div class="card-header py-3 flex items-center justify-between">
                         <h6 class="m-0 font-weight-bold text-primary">Users Table({allUsers && allUsers.length})</h6>
+                        <div className="flex items-center px-2 py-1 rounded-sm" style={{ border:"1px solid #ccc" }}>
+                            <input type="text" className='outline-none border-none' placeholder='Search for a user'/>
+                            <i class="fas fa-search fa-fw"></i>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>S/N</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
@@ -154,8 +159,9 @@ const Dashboard = ({baseUrl}) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {allUsers && allUsers.map(user => (
+                                {allUsers && allUsers.map((user, index) => (
                                     <tr className='cursor-pointer hover:bg-slate-200' onClick={() => navigate(`/userdetails/${user.id}`)}>
+                                        <td>{index + 1}</td>
                                         <td>{user.first_name}</td>
                                         <td>{user.last_name}</td>
                                         <td>{user.email}</td>
@@ -180,8 +186,12 @@ const Dashboard = ({baseUrl}) => {
                     </div>
                 </div>
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
+                    <div class="card-header py-3 flex items-center justify-between">
                         <h6 class="m-0 font-weight-bold text-primary">Investments Table({allInvestments && allInvestments.length})</h6>
+                        <div className="flex items-center px-2 py-1 rounded-sm" style={{ border:"1px solid #ccc" }}>
+                            <input type="text" className='outline-none border-none' placeholder='Search for an investment'/>
+                            <i class="fas fa-search fa-fw"></i>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -212,7 +222,6 @@ const Dashboard = ({baseUrl}) => {
                 </div>
             </div>
             }
-
         </div>
     </div>
   )

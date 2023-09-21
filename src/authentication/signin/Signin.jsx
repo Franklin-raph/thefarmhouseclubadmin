@@ -7,8 +7,8 @@ import ErrorAlert from '../../components/alert/ErrorAlert'
 const Signin = ({baseUrl}) => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    const [adminEmail, setAdminEmail] = useState("igboekwulusifranklin@gmail.com")
-    const [adminPassWord, setAdminPassword] = useState("Franklin@123")
+    const [adminEmail, setAdminEmail] = useState("")
+    const [adminPassWord, setAdminPassword] = useState("")
     const [inputType, setInputType] = useState("password");
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState()

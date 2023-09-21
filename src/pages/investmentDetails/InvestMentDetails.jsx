@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/navbar/Navbar'
-import { useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
 const InvestMentDetails = ({baseUrl}) => {
     const {id} = useParams()
@@ -17,6 +17,10 @@ const InvestMentDetails = ({baseUrl}) => {
     const [tvr, setTvr] = useState("")
     const [unit_price, setUnitPrice] = useState("")
     const [vesting_period, setVestingPeriod] = useState("")
+    const admin = JSON.parse(localStorage.getItem("admin"))
+    const[deleteProject, setDeleteProject] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
     // const [project_name, setProjectName] = useState("")
 
     useEffect(() => {
@@ -26,7 +30,7 @@ const InvestMentDetails = ({baseUrl}) => {
     async function getInvestMentDetails () {
         const response = await fetch(`${baseUrl}/investments/${id}`,{
             headers:{
-                Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1MTg4OTI1LCJpYXQiOjE2OTUxMDI1MjUsImp0aSI6IjM2MTA5Njc2YWM2ZjQwZmNhNmMyNDA5NDYyZmI0YjcyIiwidXNlcl9pZCI6IjVmNzUyNTFhLTg1ZjgtNDAzNy04NGU0LWY5MGI3ZGJlOWM4ZiJ9.vxAUTXuwnlg1kzcIC3NdDgNYLUcdZSBbJflXEO13AUU`
+                Authorization:`Bearer ${admin.access}`
             }
         })
         const data = await response.json()
@@ -45,6 +49,23 @@ const InvestMentDetails = ({baseUrl}) => {
         }
         console.log(data)
     }
+
+    async function handleProjectDelete(){
+        setLoading(true)
+        const response = await fetch(`${baseUrl}/investments/${id}`,{
+            method:"DELETE",
+            headers:{
+                Authorization:`Bearer ${admin.access}`
+            }
+        })
+        if(response) setLoading(false)
+        if(response.ok){
+            navigate("/dashboard")
+        }
+        const data = await response.json()
+        console.log(response, data)
+    }
+
   return (
     <div>
         <Navbar />
@@ -140,9 +161,21 @@ const InvestMentDetails = ({baseUrl}) => {
             </div>
             <div className="flex justify-between-items-center gap-3">
                 <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md'>Update Investment</button>
-                <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md'>Delete Investment</button>
+                <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md' onClick={() => setDeleteProject(true)}>Delete Project</button>
             </div>
         </div>
+        {deleteProject && 
+            <div className="confirmDeleteModal">
+                <div className="deleteModal">
+                    <p>Are you sure you want to delete this project?</p>
+                    <div>
+                        {loading ? <button className="bg-red-500 px-2 py-1 mr-3 rounded-[6px] text-lg text-center"><i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i></button> : <button className='text-center my-3 px-2 py-1 mr-3 bg-red-500 text-white rounded-md' onClick={handleProjectDelete}>Yes</button>}
+                        <button className='text-center my-3 px-2 py-1 mr-3 bg-gray-600 text-white rounded-md'  onClick={() => setDeleteProject(false)}>No</button>
+                    </div>
+                </div>
+            </div>
+        }
+        
     </div>
   )
 }
