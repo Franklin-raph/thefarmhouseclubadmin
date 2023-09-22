@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/images/Asset-2.-300x47.png'
 
@@ -7,6 +7,31 @@ const Navbar = () => {
     const navigate = useNavigate()
     const admin = JSON.parse(localStorage.getItem("admin"))
     const [dropDown, setDropDown] = useState(false)
+
+    useEffect(() => {
+        checkTokenStatus()
+        
+        const interval = setInterval(() => {
+            checkTokenStatus()
+          }, 300000);
+        
+        return () => clearInterval(interval);
+    },[])
+
+    function logoutUser(){
+        localStorage.clear()
+        navigate("/")
+    }
+
+    async function checkTokenStatus(){
+        console.log("Checking Token Status")
+        const response = await fetch(`https://app1.thefarmhouseclub.io/api/v1/token-status/${admin.access}`)
+        const data = await response.json()
+        console.log(response)
+        if(response.status === 400){
+            logoutUser()
+        }
+    }
 
   return (
     <div>
@@ -25,10 +50,7 @@ const Navbar = () => {
                                 <i class="ri-arrow-down-s-line cursor-pointer"></i>
                             </div>
                             {dropDown &&
-                            <div onClick={() => {
-                                localStorage.clear()
-                                navigate("/")
-                            }} className="flex gap-2 items-center absolute bg-white py-2 px-3 right-0 top-[50px] cursor-pointer" style={{ boxShadow:"0 0 10px #ccc" }}>
+                            <div onClick={logoutUser} className="flex gap-2 items-center absolute bg-white py-2 px-3 right-0 top-[50px] cursor-pointer" style={{ boxShadow:"0 0 10px #ccc" }}>
                                 <i class="ri-logout-circle-line"></i>
                                 <p>Logout</p>
                             </div>
@@ -55,8 +77,8 @@ const Navbar = () => {
                 </Link>
             </li>
             <li class="nav-item">
-                <Link to="/newinvestment" class="nav-link">
-                    <i class="ri-add-circle-fill text-[26px]"></i>
+                <Link to="/allwalletaddress" class="nav-link">
+                    <i class="ri-wallet-3-fill text-[26px]"></i>
                     <span>All Wallet Addresses</span>
                 </Link>
             </li>

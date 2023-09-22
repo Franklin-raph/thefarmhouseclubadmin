@@ -17,7 +17,7 @@ const NewInvestment = ({baseUrl}) => {
     // const [proposal_fee, setProposalFee] = useState("")
     const [maturity_date, setMaturityDate] = useState("")
     const [vesting_period, setVestingPeriod] = useState("")
-    const [close, setClose] = useState("")
+    const [close, setClose] = useState(false)
     const [description, setDescription] = useState("")
     const [error, setError] = useState()
     const [success, setSuccess] = useState()
@@ -25,6 +25,9 @@ const NewInvestment = ({baseUrl}) => {
     const admin = JSON.parse(localStorage.getItem("admin"))
 
     async function postAnInvestment(){
+        console.log(JSON.stringify({project_name:project_name, project_type:project_type, tvl:tvl, tvr:tvr, 
+            profit_yield:profit_yield, unit_price:unit_price, apy:apy, maturity_date:maturity_date, 
+            vesting_period:vesting_period, close:close, description:description}))
         if(!project_name || !project_type || !tvl || !tvr || !profit_yield || !unit_price || !apy || !maturity_date || !vesting_period || !description){
             setError("Please fill in all fields")
         }else{
@@ -68,14 +71,17 @@ const NewInvestment = ({baseUrl}) => {
                 </div>
                 <div className='mt-4 relative w-full'>
                     <label className='block'>Project Type</label>
-                    <div style={{ border:"1px solid #bebebe" }} className='py-2 px-1 rounded-md w-full flex items-center justify-between'>
-                        <input type="text" placeholder='Processing' onChange={e => setProjectType(e.target.value)} className="outline-none" />
-                        <i class="ri-arrow-down-s-line cursor-pointer" onClick={() => setProjectTypeDropDown(!projectTypeDropDown)}></i>
+                    <div onClick={() => setProjectTypeDropDown(!projectTypeDropDown)} style={{ border:"1px solid #bebebe" }} className='cursor-pointer py-2 px-1 rounded-md w-full flex items-center justify-between'>
+                        <input type="text" placeholder='Processing'  className="outline-none cursor-pointer" value={project_type}/>
+                        <i class="ri-arrow-down-s-line cursor-pointer" ></i>
                     </div>
                     {projectTypeDropDown &&
                     <div className="absolute bg-slate-200 mt-1 rounded-md py-1 px-2 w-[100%]">
                         {projectTypes.map(projectType => (
-                            <p className='cursor-pointer my-1'>{projectType}</p>
+                            <p className='cursor-pointer my-1' onClick={() =>{ 
+                                setProjectType(projectType)
+                                setProjectTypeDropDown(!projectTypeDropDown)
+                            }}>{projectType}</p>
                         ))}
                     </div>
                     }
@@ -91,6 +97,12 @@ const NewInvestment = ({baseUrl}) => {
                     <input onChange={e => setTvl(e.target.value)} type="text" placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
                 </div>
             </div>
+            <div className="flex items-center jsutify-between gap-5">
+                <div className='mt-4 w-full'>
+                    <label className='block'>APY</label>
+                    <input type="text" onChange={e => setApy(e.target.value)} placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
+                </div>
+            </div>
             <div className='flex items-center justify-between gap-5'>
                 <div className='mt-4 w-full'>
                     <label className='block'>Profit Yield</label>
@@ -102,24 +114,24 @@ const NewInvestment = ({baseUrl}) => {
                 </div>
             </div>
             <div className='flex items-center justify-between gap-5'>
-                <div className='mt-4 w-full'>
+                {/* <div className='mt-4 w-full'>
                     <label className='block'>Liquidity Pool</label>
                     <input type="text" placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
-                </div>
-                <div className='mt-4 w-full'>
+                </div> */}
+                {/* <div className='mt-4 w-full'>
                     <label className='block'>APY</label>
                     <input type="text" onChange={e => setApy(e.target.value)} placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
-                </div>
+                </div> */}
             </div>
             <div className='flex items-center justify-between gap-5'>
-                <div className='mt-4 w-full'>
+                {/* <div className='mt-4 w-full'>
                     <label className='block'>Voting Fee</label>
                     <input type="text" placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
-                </div>
-                <div className='mt-4 w-full'>
+                </div> */}
+                {/* <div className='mt-4 w-full'>
                     <label className='block'>Proposal Fee</label>
                     <input type="text" placeholder='0' style={{ border:"1px solid #bebebe" }} className='outline-none py-2 px-1 rounded-md w-full'/>
-                </div>
+                </div> */}
             </div>
             <div className='flex items-center justify-between gap-5'>
                 <div className='mt-4 w-full'>

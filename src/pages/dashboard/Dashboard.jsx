@@ -9,6 +9,8 @@ const Dashboard = ({baseUrl}) => {
     const [usersTab, setUsersTab] = useState(true)
     const [investMentsTab, setInvestMentsTab] = useState(false)
     const admin = JSON.parse(localStorage.getItem("admin"))
+    const [userQuerySearch, setUserQuerySearch] = useState("")
+    const [productQuerySearch, setProductQuerySearch] = useState("")
     // const [usersTab, setUsersTab] = useState(true)
     // const [usersTab, setUsersTab] = useState(true)
 
@@ -142,7 +144,7 @@ const Dashboard = ({baseUrl}) => {
                     <div class="card-header py-3 flex items-center justify-between">
                         <h6 class="m-0 font-weight-bold text-primary">Users Table({allUsers && allUsers.length})</h6>
                         <div className="flex items-center px-2 py-1 rounded-sm" style={{ border:"1px solid #ccc" }}>
-                            <input type="text" className='outline-none border-none' placeholder='Search for a user'/>
+                            <input type="text" className='outline-none border-none' onChange={(e) => setUserQuerySearch(e.target.value.toLocaleLowerCase())} placeholder='Search for a user'/>
                             <i class="fas fa-search fa-fw"></i>
                         </div>
                     </div>
@@ -159,7 +161,14 @@ const Dashboard = ({baseUrl}) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {allUsers && allUsers.map((user, index) => (
+                                {allUsers && allUsers.filter(user => user.first_name
+                                .toLowerCase().includes(userQuerySearch) || user.email
+                                .toLowerCase().includes(userQuerySearch) || user.last_name
+                                .toLowerCase().includes(userQuerySearch) || user.date_joined
+                                .toLowerCase().includes(userQuerySearch)
+                                )
+                                .map((user, index) =>{
+                                    return(
                                     <tr className='cursor-pointer hover:bg-slate-200' onClick={() => navigate(`/userdetails/${user.id}`)}>
                                         <td>{index + 1}</td>
                                         <td>{user.first_name}</td>
@@ -167,7 +176,7 @@ const Dashboard = ({baseUrl}) => {
                                         <td>{user.email}</td>
                                         <td>{user.date_joined}</td>
                                     </tr>
-                                ))}
+                                )})}
                                 </tbody>
                             </table>
                         </div>
@@ -189,7 +198,7 @@ const Dashboard = ({baseUrl}) => {
                     <div class="card-header py-3 flex items-center justify-between">
                         <h6 class="m-0 font-weight-bold text-primary">Investments Table({allInvestments && allInvestments.length})</h6>
                         <div className="flex items-center px-2 py-1 rounded-sm" style={{ border:"1px solid #ccc" }}>
-                            <input type="text" className='outline-none border-none' placeholder='Search for an investment'/>
+                            <input type="text" onChange={(e) => setProductQuerySearch(e.target.value.toLocaleLowerCase())} className='outline-none border-none' placeholder='Search for an investment'/>
                             <i class="fas fa-search fa-fw"></i>
                         </div>
                     </div>
@@ -206,7 +215,13 @@ const Dashboard = ({baseUrl}) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {allInvestments && allInvestments.map(investment => (
+                                {allInvestments && allInvestments.filter(investment => investment.project_name
+                                .toLowerCase().includes(productQuerySearch) || investment.project_type
+                                .toLowerCase().includes(productQuerySearch) || investment.date_posted
+                                .toLowerCase().includes(productQuerySearch)
+                                )
+                                .map((investment, index) =>{
+                                    return(
                                     <tr className='cursor-pointer hover:bg-slate-200' onClick={(e) => navigate(`/investmentdetails/${investment.id}`)}>
                                         <td>{investment.project_name}</td>
                                         <td>{investment.project_type}</td>
@@ -214,7 +229,7 @@ const Dashboard = ({baseUrl}) => {
                                         <td>{new Date(investment.date_posted).toLocaleDateString()}</td>
                                         <td>{investment.close === false ? <p className='p-2 bg-green-500 rounded-full inline-block'></p> : <p className='p-2 bg-red-500 rounded-full inline-block'></p> }</td>
                                     </tr>
-                                ))}
+                                )})}
                                 </tbody>
                             </table>
                         </div>

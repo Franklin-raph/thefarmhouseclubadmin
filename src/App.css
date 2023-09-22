@@ -11445,3 +11445,8 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /* ANIMATED CANCELMARK STARTS */
+
+.tab-item.active{
+  color: #1AC888;
+  font-weight: 700;
+}

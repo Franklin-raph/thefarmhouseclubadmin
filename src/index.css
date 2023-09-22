@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.userTabNav p{
+    @apply cursor-pointer
+}

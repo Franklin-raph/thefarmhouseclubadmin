@@ -6,6 +6,7 @@ import Dashboard from './pages/dashboard/Dashboard'
 import NewInvestment from './pages/newInvestment/NewInvestment'
 import UserDetails from './pages/userDetails/UserDetails'
 import InvestMentDetails from './pages/investmentDetails/InvestMentDetails'
+import AllWalletAddress from './pages/allWalletAddress/AllWalletAddress'
 
 function App() {
   const baseUrl = "https://app1.thefarmhouseclub.io/api/v1"
@@ -17,6 +18,7 @@ function App() {
           <Route path='/signin' element={<Signin baseUrl={baseUrl}/>}/>
           <Route path='/dashboard' element={<Dashboard baseUrl={baseUrl}/>}/>
           <Route path='/newinvestment' element={<NewInvestment baseUrl={baseUrl}/>}/>
+          <Route path='/allwalletaddress' element={<AllWalletAddress baseUrl={baseUrl}/>}/>
           <Route path='/userdetails/:id' element={<UserDetails baseUrl={baseUrl}/>}/>
           <Route path='/investmentdetails/:id' element={<InvestMentDetails baseUrl={baseUrl}/>}/>
         </Routes>
