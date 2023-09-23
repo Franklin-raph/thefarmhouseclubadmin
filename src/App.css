@@ -11450,3 +11450,15 @@ body.sidebar-toggled footer.sticky-footer {
   color: #1AC888;
   font-weight: 700;
 }
+
+.leaflet-container{
+  height: 78vh;
+  width: 100%;
+  margin-left: auto;
+  margin-bottom: 2rem;
+}
+
+.state-drop-down{
+  height: 250px;
+  overflow-y: scroll;
+}

@@ -82,6 +82,24 @@ const Navbar = () => {
                     <span>All Wallet Addresses</span>
                 </Link>
             </li>
+            <li class="nav-item">
+                <Link to="/newfarmlocation" class="nav-link">
+                    <i class="ri-add-circle-fill text-[26px]"></i>
+                    <span>Enter New Farms</span>
+                </Link>
+            </li>
+            <li class="nav-item">
+                <Link to="/map" class="nav-link">
+                    <i class="ri-road-map-fill text-[26px]"></i>
+                    <span>View Map</span>
+                </Link>
+            </li>
+            <li class="nav-item">
+                <Link to="/allfarms" class="nav-link">
+                    <i class="ri-road-map-fill text-[26px]"></i>
+                    <span>All Farms</span>
+                </Link>
+            </li>
         </ul>
     </div>
   )
