@@ -8,9 +8,9 @@ import UserDetails from './pages/userDetails/UserDetails'
 import InvestMentDetails from './pages/investmentDetails/InvestMentDetails'
 import AllWalletAddress from './pages/allWalletAddress/AllWalletAddress'
 import FarmLocation from './pages/farmLocation/FarmLocation'
-import Map from './pages/Map/Map'
 import AllFarms from './pages/allFarms/AllFarms'
 import FarmDetails from './pages/farmDetails/FarmDetails'
+import Map from './pages/map/Map'
 
 function App() {
   const baseUrl = "https://app1.thefarmhouseclub.io/api/v1"
