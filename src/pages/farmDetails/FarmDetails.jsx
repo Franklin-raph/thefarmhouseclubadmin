@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react'
 import Navbar from '../../components/navbar/Navbar'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import SuccessAlert from '../../components/alert/SuccessAlert'
+import ErrorAlert from '../../components/alert/ErrorAlert'
 
 const FarmDetails = ({baseUrl}) => {
     const [error, setError] = useState("")
@@ -22,9 +24,10 @@ const FarmDetails = ({baseUrl}) => {
     },[])
 
     const {id} = useParams()
+    const navigate = useNavigate()
 
     async function getFarmDetails(){
-        const response = await fetch(`${baseUrl}/farm-details/${id}`,{
+        const response = await fetch(`${baseUrl}/farm-details/${id}/`,{
             headers:{
                 "Content-Type":"application/json",
                 Authorization:`Bearer ${admin.access}`
@@ -50,8 +53,8 @@ const FarmDetails = ({baseUrl}) => {
             setError("Please fill in all fields")
         }else{
             setLoading(true)
-            const response = await fetch(`${baseUrl}/farm-details/`, {
-                method:"POST",
+            const response = await fetch(`${baseUrl}/farm-details/${id}/`, {
+                method:"PUT",
                 headers:{
                     "Content-Type":"application/json",
                     Authorization:`Bearer ${admin.access}`
@@ -61,7 +64,7 @@ const FarmDetails = ({baseUrl}) => {
             })
             if(response) setLoading(false)
             if(response.ok){
-                setSuccess("Farm Details have been registered successfully")
+                setSuccess("Farm Details have been updated successfully")
             }
             if(!response.ok){
                 setError("An error occured, please try again later.")
@@ -70,20 +73,33 @@ const FarmDetails = ({baseUrl}) => {
     }
 
     async function handleFarmDelete(){
-        const response = await fetch(`${baseUrl}/farm-details/${id}`,{
+        setLoading(true)
+        setDeleteFarmModal(false)
+        const response = await fetch(`${baseUrl}/farm-details/${id}/`,{
             method:"DELETE",
             headers:{
-                "Content-Type":"application/json",
                 Authorization:`Bearer ${admin.access}`
             },
         })
-        console.log(response, data)
         const data = await response.json()
+        console.log(response, data)
+        if(response) setLoading(false)
+        if(response.ok){
+            navigate("/farmdetails")
+        }
+        if(!response.ok){
+            setError("An error occured, please try again later.")
+        }
     }
 
   return (
     <div>
         <Navbar />
+        {loading && 
+            <div className="center-loader">
+                <i className="fa-solid fa-gear fa-spin" ></i>
+            </div>
+        }
         {error && <ErrorAlert error={error} setError={setError} />}
         {success && <SuccessAlert success={success} setSuccess={setSuccess}/>}
         <div className="container-fluid dashboard-content pb-5">
@@ -135,19 +151,17 @@ const FarmDetails = ({baseUrl}) => {
                 </div>
             </div>
 
-            <div>
+            <div className='flex items-center gap-10 mt-7'>
                 {loading ? 
                 <button className="bg-[#1AC888] w-full my-3 py-2 rounded-[6px] text-lg text-center">
                     <i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i>
                 </button> 
-                : 
-                <div className='flex items-center gap-10 mt-7'>
-                    <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md' onClick={updateFarmDetails}>
-                        Update
-                    </button>
-                    <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md' onClick={() => setDeleteFarmModal(true)}>Delete</button>
-                </div>
-                    }
+                :
+                <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md' onClick={updateFarmDetails}>
+                    Update
+                </button>
+                }
+                <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md' onClick={() => setDeleteFarmModal(true)}>Delete</button>
             </div>
 
             {deleteFarmModal && 

@@ -242,14 +242,14 @@ const UserDetails = ({baseUrl}) => {
                     <h1 className='font-[600] text-left border-b mb-3'>Project Detail</h1>
                     <div>
                         <p>Project Name</p>
-                        <p>{investmentDetail.amount_invested}</p>
+                        <p>{investmentDetail.project_name}</p>
                     </div>
                     <div className='my-3'>
                         <p>Profit Yield</p>
                         <p>{investmentDetail.my_profit}</p>
                     </div>
                     <div>
-                        <p>Project Name</p>
+                        <p>Amount Invested</p>
                         <p>{investmentDetail.amount_invested}AVDA</p>
                     </div>
                 </div>

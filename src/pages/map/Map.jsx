@@ -21,6 +21,8 @@ const Map = ({baseUrl}) => {
     const [initialMapLocation, setInitialMapLocation] = useState()
     const [map, setMap] = useState( /** @type google.maps.Map */ (null))
     const [selectedPlace, setSelectedPlace] = useState()
+    const [loadNewLocation, setLoadNewLocation] = useState(false)
+    const [zoomLevel, setZoomLevel] = useState(8)
 
     const arrayOfCrops = [
         "Rice",
@@ -29,7 +31,9 @@ const Map = ({baseUrl}) => {
         "Beans",
         "Yam",
         "Ginger",
-        "Poultry Farm"
+        "Poultry Farm",
+        "Cocoa",
+        "Palm Oil"
     ]
 
     const arrayOfStates = [
@@ -102,20 +106,19 @@ const Map = ({baseUrl}) => {
         }
     }
 
-    function locatePinsOnTheMap(){
-        map.panTo(markers[0])
-    }
-
     async function filterSearch(){
+        // setZoomLevel(10)
+        setLoadNewLocation(true)
         const response = await fetch(`${baseUrl}/farm-details/?state=${state}&crop=${crop}`,{
         method:"GET",
             headers:{
                 Authorization:`Bearer ${admin.access}`
             },
         })
+
         const data = await response.json()
+        if(response) setLoadNewLocation(false)
         if(response.ok){
-            // setInitialMap(true)
             setMarkers(data)
             const geocodeMarkers = data.map(item => ({
                 ...item,
@@ -127,11 +130,10 @@ const Map = ({baseUrl}) => {
                 lat: item.geocode[0],
                 lng: item.geocode[1]
             }));
-            // map.panTo(markers[0])
             // locatePinsOnTheMap()
             setInitialMapLocation(markers[0])
-            map.panTo({lat: initialMapLocation.lat, lng: initialMapLocation.lng})
-            console.log(initialMapLocation)
+            panMapFunction(initialMapLocation.lat, initialMapLocation.lng)
+            // map.panTo({lat: initialMapLocation.lat, lng: initialMapLocation.lng})
             setMarkers(geocodeMarkers)
         }
     }
@@ -145,9 +147,10 @@ const Map = ({baseUrl}) => {
         return "Loading map"
       }
 
-    // function loadMapFunction(){
-        
-    // }
+    function panMapFunction(lat, lng){
+        // setZoomLevel(18)
+        map.panTo({lat: lat, lng: lng}, {animate: true, duration: 2.0})
+    }
     
   return (
     <div>
@@ -159,7 +162,7 @@ const Map = ({baseUrl}) => {
             </div>
             <div className='flex items-start justify-between gap-5'>
                 {initialMapLocation &&
-                    <GoogleMap center={{lat:initialMapLocation.lat, lng:initialMapLocation.lng }} zoom={7}
+                    <GoogleMap center={{lat:initialMapLocation.lat, lng:initialMapLocation.lng }} zoom={zoomLevel}
                     mapContainerStyle={{ width:"100%", height:"90vh" }} onLoad={map => setMap(map)}>
                         {markers && markers.map(center => (
                         <MarkerF 
@@ -238,13 +241,21 @@ const Map = ({baseUrl}) => {
                         </div>
                         )
                     }
-                    {showButton && <button className='mt-3 bg-[#1AC888] text-white py-1 px-2 w-full rounded-sm' onClick={filterSearch} >Search</button>}
+                    {loadNewLocation ? 
+                        <button className="mt-3 bg-[#1AC888] text-white py-1 px-2 w-full rounded-sm"><i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i></button>
+                        :
+                        <button className='mt-3 bg-[#1AC888] text-white py-1 px-2 w-full rounded-sm' onClick={filterSearch} >Search</button>
+                    }
                 </div>
             {/* <button style={{ cursor:"pointer", width:"10%", padding:"1rem 0", margin:"2rem auto" }} onClick={() => {
                 console.log(markers[0])
                 map.panTo({lat: initialMapLocation.lat, lng: initialMapLocation.lng})
             }}>Click</button> */}
-            <button style={{ cursor:"pointer", width:"10%", padding:"1rem 0", margin:"2rem auto" }} onClick={() => map.panTo({lat: 6.265001, lng: 7.115980})}>Click</button>
+            {/* <button style={{ cursor:"pointer", width:"10%", padding:"1rem 0", margin:"2rem auto" }} onClick={() =>{ 
+                map.panTo({lat: 6.265001, lng: 7.115980}, {animate: true, duration: 2.0})
+                // setZoomLevel(18)
+                }}>Click</button> */}
+
             </div>
             </div>
         </div>

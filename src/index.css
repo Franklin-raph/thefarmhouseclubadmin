@@ -5,3 +5,7 @@
 .userTabNav p{
     @apply cursor-pointer
 }
+
+.transactinInfoModal p:nth-child(1){
+    @apply font-bold
+}

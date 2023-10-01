@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import SuccessAlert from '../../components/alert/SuccessAlert'
+import ErrorAlert from '../../components/alert/ErrorAlert'
 
 const InvestMentDetails = ({baseUrl}) => {
     const {id} = useParams()
@@ -17,10 +19,12 @@ const InvestMentDetails = ({baseUrl}) => {
     const [tvr, setTvr] = useState("")
     const [unit_price, setUnitPrice] = useState("")
     const [vesting_period, setVestingPeriod] = useState("")
-    const admin = JSON.parse(localStorage.getItem("admin"))
     const[deleteProject, setDeleteProject] = useState(false)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const admin = JSON.parse(localStorage.getItem("admin"))
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState(false)
     // const [project_name, setProjectName] = useState("")
 
     useEffect(() => {
@@ -61,6 +65,33 @@ const InvestMentDetails = ({baseUrl}) => {
         if(response) setLoading(false)
         if(response.ok){
             navigate("/dashboard")
+        }
+        const data = await response.json()
+        console.log(response, data)
+    }
+
+    async function handleProjectUpdate(){
+        setLoading(true)
+        console.log(JSON.stringify({project_name:project_name, project_type:project_type, tvl:0, tvr:tvr, 
+            profit_yield:0, unit_price:unit_price, apy:apy, maturity_date:maturity_date, 
+            vesting_period:vesting_period, close:close, description:description}))
+        const response = await fetch(`${baseUrl}/investments/${id}`,{
+            method:"PUT",
+            headers:{
+                Authorization:`Bearer ${admin.access}`,
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({project_name:project_name, project_type:project_type, tvl:0, tvr:tvr, 
+                profit_yield:0, unit_price:unit_price, apy:apy, maturity_date:maturity_date, 
+                vesting_period:vesting_period, close:close, description:description}),
+        })
+        if(response) setLoading(false)
+        if(response.ok){
+            navigate("/dashboard")
+            setSuccess("Project has been successfully updated")
+        }
+        if(!response.ok){
+            setError("An error occured please try again")
         }
         const data = await response.json()
         console.log(response, data)
@@ -160,8 +191,12 @@ const InvestMentDetails = ({baseUrl}) => {
                 <textarea value={description} onChange={e => setDescription(e.target.value)} style={{ border:"1px solid #bebebe" }} placeholder='Enter a project description' className='outline-none py-2 px-1 rounded-md w-full' cols="30" rows="10"></textarea>
             </div>
             <div className="flex justify-between-items-center gap-3">
-                <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md'>Update Investment</button>
-                <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md' onClick={() => setDeleteProject(true)}>Delete Project</button>
+                {loading ? 
+                    <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md'><i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i></button>
+                    :
+                    <button className='text-center w-full my-3 py-2 bg-[#1AC888] text-white rounded-md' onClick={handleProjectUpdate} >Update Investment</button> 
+                }
+                    <button className='text-center w-full my-3 py-2 bg-red-500 text-white rounded-md' onClick={() => setDeleteProject(true)}>Delete Project</button>
             </div>
         </div>
         {deleteProject && 
@@ -175,7 +210,8 @@ const InvestMentDetails = ({baseUrl}) => {
                 </div>
             </div>
         }
-        
+        {success && <SuccessAlert success={success} setSuccess={setSuccess}/>}
+        {error && <ErrorAlert error={error} setError={setError}/>}
     </div>
   )
 }
