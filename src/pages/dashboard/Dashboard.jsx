@@ -157,6 +157,7 @@ const Dashboard = ({baseUrl}) => {
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
+                                        <th>Verified?</th>
                                         <th>Date Registered</th>
                                     </tr>
                                 </thead>
@@ -174,6 +175,7 @@ const Dashboard = ({baseUrl}) => {
                                         <td>{user.first_name}</td>
                                         <td>{user.last_name}</td>
                                         <td>{user.email}</td>
+                                        <td>{(user.is_verified).toString()}</td>
                                         <td>{user.date_joined}</td>
                                     </tr>
                                 )})}

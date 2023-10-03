@@ -81,11 +81,11 @@ const FarmDetails = ({baseUrl}) => {
                 Authorization:`Bearer ${admin.access}`
             },
         })
-        const data = await response.json()
-        console.log(response, data)
+        console.log(response)
+        // const data = await response.json()
         if(response) setLoading(false)
         if(response.ok){
-            navigate("/farmdetails")
+            navigate("/allfarms")
         }
         if(!response.ok){
             setError("An error occured, please try again later.")

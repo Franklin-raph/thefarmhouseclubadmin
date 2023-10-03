@@ -7,13 +7,16 @@ const UserDetails = ({baseUrl}) => {
     const admin = JSON.parse(localStorage.getItem("admin"))
     const [userDetails, setUserDetails] = useState()
 
-    const tabsArray = ['Profile Details','Account Details','Wallet Address Details','Security Details','Transaction Details','Staked Projects']
+    const tabsArray = ['Profile Details','Account Details','Wallet Address Details','Security Details','Transaction Details','Staked Projects', 'KYC']
     const [activeTab, setActiveTab] = useState(tabsArray[0]);
     const [allUsersTransactions, setAllUsersTransactions] = useState([])
     const [singleTransacionInfo, setSingleTransacionInfo] = useState()
     const [transactioInfoModal, setTransactioInfoModal] = useState(false)
     const [userStakedProject, setUserStakedProjectsArray] = useState([])
     const [investmentDetail, setInvestMentDetail] = useState()
+    const [loading, setLoading] = useState(false)
+    const [verifyUerKycModal, setVerifyUerKycModal] = useState(false)
+    const [userKYCDetails, setUserKYCDetails] = useState()
 
     useEffect(() => {
         getUserDetails()
@@ -63,6 +66,9 @@ const UserDetails = ({baseUrl}) => {
         if(tab === 'Staked Projects'){
             getUsersStackedProjects()
         }
+        if(tab === 'KYC'){
+            getUserKycData()
+        }
       };
 
       const openTransactionModalInfo = (id) => {
@@ -84,6 +90,36 @@ const UserDetails = ({baseUrl}) => {
         }
         console.log(response, data)
     }
+
+    async function getUserKycData(){
+        setLoading(true)
+        const response = await fetch(`${baseUrl}/verify-card-kyc/?user_id=${id}`,{
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:`Bearer ${admin.access}`
+            },
+        })
+        const data = await response.json()
+        console.log(data)
+        if(response) setLoading(false)
+        if(response.ok){
+            setUserKYCDetails(data)
+        }
+    }
+
+    async function verifyUserKycDetails(){
+        setLoading(true)
+        const response = await fetch(`${baseUrl}/verify-user-acc/${id}/`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json",
+                Authorization:`Bearer ${admin.access}`
+            },
+        })
+        if(response) setLoading(false)
+        const data = await response.json()
+        console.log(data)
+    }
     
   return (
     <div>
@@ -97,6 +133,7 @@ const UserDetails = ({baseUrl}) => {
                             key={index}
                             className={`tab-item ${activeTab === tab ? 'active' : ''}`}
                             onClick={() => handleTabClick(tab)}
+                            style={{ fontSize:"14px" }}
                             >{tab}</p>
                         ))}
                     </div>
@@ -230,6 +267,55 @@ const UserDetails = ({baseUrl}) => {
                             ))
                         }
                     </>
+                    }
+
+                    {activeTab === "KYC" &&
+                    <>
+                        {userKYCDetails && 
+                            <div>
+                                <img src={userKYCDetails.id_card} alt="" />
+                                <div className='flex items-center gap-2 mt-3'>
+                                    <h2 className='font-bold'>First name:</h2>
+                                    <p>{userDetails.first_name}</p>
+                                </div>
+                                <div className='flex items-center gap-2 mt-3'>
+                                    <h2 className='font-bold'>Last name:</h2>
+                                    <p>{userDetails.last_name}</p>
+                                </div>
+                                <div className='flex items-center gap-2 mt-3'>
+                                    <h2 className='font-bold'>Email:</h2>
+                                    <p>{userDetails.email}</p>
+                                </div>
+                                <div className='flex items-center gap-2 mt-3'>
+                                <button className='bg-[#1AC888] text-white rounded-sm py-2 px-4' onClick={() => setVerifyUerKycModal(true)}>Verify User</button>
+                                </div>
+                            </div>
+                            // userStakedProject.map((project, index) => (
+                            //     <div className='flex items-center gap-2 cursor-pointer rounded-md hover:bg-gray-700 p-3 mb-0 proposalTile' onClick={() => getInvestMentDetail(`${project.id}`)}>
+                            //         <p>{index + 1}.</p>
+                            //         <p>{project.project_name}</p>
+                            //     </div>
+                            // ))
+                        }
+                    </>
+                    }
+                    {verifyUerKycModal &&
+                    <div className="twoFactorModalBg transactionModal">
+                        <div className='twoFactorModal'>
+                            <h2 className='font-bold mb-2'>Verify User Kyc Details</h2>
+                            <p>Are you sure you want to verify user KYC details?</p>
+                            <div className='mt-4'>
+                                {loading ?
+                                    <button className='bg-[#1AC888] text-white rounded-sm py-1 px-2 mr-3'>
+                                        <i className="fa-solid fa-gear fa-spin" style={{ color:"#fff" }}></i>
+                                    </button>
+                                    :
+                                <button className='bg-[#1AC888] text-white px-2 py-1 rounded-sm mr-3' onClick={verifyUserKycDetails}>Yes</button>
+                                }
+                                <button className='bg-red-600 text-white px-2 py-1 rounded-sm' onClick={() => setVerifyUerKycModal(!verifyUerKycModal)}>No</button>
+                            </div>
+                        </div>
+                    </div>
                     }
                 </div>
             </>
