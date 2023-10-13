@@ -83,6 +83,18 @@ const Navbar = () => {
                 </Link>
             </li>
             <li class="nav-item">
+                <Link to="/allwithdrawalrequests" class="nav-link">
+                    <i class="ri-wallet-3-fill text-[26px]"></i>
+                    <span>All Withdrawal Requests</span>
+                </Link>
+            </li>
+            <li class="nav-item">
+                <Link to="/allsecondaryinvestorsrequests" class="nav-link">
+                    <i class="ri-wallet-3-fill text-[26px]"></i>
+                    <span>Secondary Investors Requests</span>
+                </Link>
+            </li>
+            <li class="nav-item">
                 <Link to="/newfarmlocation" class="nav-link">
                     <i class="ri-add-circle-fill text-[26px]"></i>
                     <span>Enter New Farms</span>

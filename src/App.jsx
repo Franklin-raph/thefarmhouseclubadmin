@@ -12,6 +12,8 @@ import AllFarms from './pages/allFarms/AllFarms'
 import FarmDetails from './pages/farmDetails/FarmDetails'
 import Map from './pages/map/Map'
 import WalletTransactionDetails from './pages/walletTransactionDetails/WalletTransactionDetails'
+import AllWithdrawalRequests from './pages/allwithdrawalrequests/AllWithdrawalRequests'
+import AllSecondaryInvestorRequest from './pages/allSecondaryInvestorRequest/AllSecondaryInvestorRequest'
 
 function App() {
   const baseUrl = "https://app1.thefarmhouseclub.io/api/v1"
@@ -30,6 +32,8 @@ function App() {
           <Route path='/newfarmlocation' element={<FarmLocation baseUrl={baseUrl}/>}/>
           <Route path='/allfarms' element={<AllFarms baseUrl={baseUrl}/>}/>
           <Route path='/farmdetails/:id' element={<FarmDetails baseUrl={baseUrl}/>}/>
+          <Route path='/allwithdrawalrequests' element={<AllWithdrawalRequests baseUrl={baseUrl}/>}/>
+          <Route path='/allsecondaryinvestorsrequests' element={<AllSecondaryInvestorRequest baseUrl={baseUrl}/>}/>
           <Route path='/wallet-transaction-details/:walletAddress' element={<WalletTransactionDetails baseUrl={baseUrl}/>}/>
         </Routes>
     </HashRouter>

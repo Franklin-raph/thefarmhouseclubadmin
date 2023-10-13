@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import { useParams } from 'react-router-dom'
+import SuccessAlert from '../../components/alert/SuccessAlert'
+import ErrorAlert from '../../components/alert/ErrorAlert'
 
 const UserDetails = ({baseUrl}) => {
     const {id} = useParams()
@@ -16,6 +18,8 @@ const UserDetails = ({baseUrl}) => {
     const [investmentDetail, setInvestMentDetail] = useState()
     const [loading, setLoading] = useState(false)
     const [verifyUerKycModal, setVerifyUerKycModal] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [error, setError] = useState(false)
     const [userKYCDetails, setUserKYCDetails] = useState()
 
     useEffect(() => {
@@ -118,6 +122,13 @@ const UserDetails = ({baseUrl}) => {
         })
         if(response) setLoading(false)
         const data = await response.json()
+        if(response) setVerifyUerKycModal(false)
+        if(response.ok){
+            setSuccess("User successfully verified")
+        }
+        if(!response.ok){
+            setError("User not verified")
+        }
         console.log(data)
     }
     
@@ -299,6 +310,7 @@ const UserDetails = ({baseUrl}) => {
                         }
                     </>
                     }
+
                     {verifyUerKycModal &&
                     <div className="twoFactorModalBg transactionModal">
                         <div className='twoFactorModal'>
@@ -389,6 +401,9 @@ const UserDetails = ({baseUrl}) => {
             </div>
           </div>
         }
+
+        {success && <SuccessAlert success={success} setSuccess={setSuccess}/> }
+        {error && <ErrorAlert error={error} setError={setError}/> }
 
     </div>
   )

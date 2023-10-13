@@ -111,6 +111,7 @@ const WalletTransactionDetails = ({baseUrl}) => {
                 {noData && <p className='font-bold text-2xl text-center mt-5'>{noData}</p> }
             </div>
         </div>
+
         {transactionInfoModal && 
             <div className='transactionInfoModalBg'>
                 <div className="transactinInfoModal relative">
@@ -144,9 +145,9 @@ const WalletTransactionDetails = ({baseUrl}) => {
                         <p>{(transactionInfoModal.to_account)}</p>
                     </div>
                 </div>
-                
             </div>
         }
+        
         {fundAdminWallet && 
         <div className='transactionInfoModalBg'>
             <div className="transactinInfoModal relative lg:w-[35%] md:w-[50%] sm:w-[80%]">

@@ -23,6 +23,8 @@ const Map = ({baseUrl}) => {
     const [selectedPlace, setSelectedPlace] = useState()
     const [loadNewLocation, setLoadNewLocation] = useState(false)
     const [zoomLevel, setZoomLevel] = useState(8)
+    const [allStates, setAllStates] = useState([])
+    const [allCrops, setAllCrops] = useState([])
 
     const arrayOfCrops = [
         "Rice",
@@ -103,8 +105,22 @@ const Map = ({baseUrl}) => {
             }));
             setInitialMapLocation(markers[0])
             setMarkers(geocodeMarkers)
+
+            const allStates = data.map(state => state.state)
+            const allCrops = data.map(crop => crop.crop)
+            setAllStates([...new Set(allStates)])
+            setAllCrops([...new Set(allCrops)])
+
+            // setAllCrops(
+            //     data.map(obj => obj.crop)
+            // )
+            // setAllStates(
+            //     data.map(state => state.state)
+            // )
         }
     }
+
+    console.log(allCrops)
 
     async function filterSearch(){
         // setZoomLevel(10)
@@ -216,7 +232,7 @@ const Map = ({baseUrl}) => {
                     
                     {showStates && (
                         <div className='shadow bg-white p-3 state-drop-down'>
-                            {arrayOfStates.map(state => (
+                            {allStates && allStates.map(state => (
                                 <p className='cursor-pointer' onClick={() => {
                                     setState(state)
                                     setShowStates(!showStates)
@@ -232,7 +248,7 @@ const Map = ({baseUrl}) => {
                     </div>
                     {showCrops && (
                         <div className='shadow bg-white p-3 state-drop-down'>
-                            {arrayOfCrops.map(crop => (
+                            {allCrops && allCrops.map(crop => (
                                 <p className='cursor-pointer' onClick={() => {
                                     setCrop(crop)
                                     setShowCrops(!showCrops)

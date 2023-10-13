@@ -11490,3 +11490,8 @@ body.sidebar-toggled footer.sticky-footer {
 .center-loader i{
   font-size: 28px;
 }
+
+.nav-link{
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
